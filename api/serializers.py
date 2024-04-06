@@ -7,7 +7,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     imageurl = serializers.SerializerMethodField()
     class Meta:
         model = CustomUser
-        fields = ['id', 'team', 'user', 'user_name', 'member1_name', 'member2_name', 'title', 'color', 'description', 'listitem_count', 'done_item_count', 'has_team','dateline']
+        fields = ('id', 'email', 'name', 'profile_pic', 'password','lang','expo_token','imageurl','tourStatusSharedListDone','tourStatusNotesDone','tourStatusHabitsDone')
         extra_kwargs = {
             'password': {'write_only': True},
         }
