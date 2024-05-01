@@ -57,6 +57,21 @@ def list_endpoints(request):
     return Response(url_list)
 
 
+@permission_classes([IsAuthenticated])
+def delete_user(request, pk):
+    try:
+        user = CustomUser.objects.get(pk=pk)
+    except CustomUser.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        # Check if the requesting user is the owner of the user object
+        if user != request.user:
+            return Response({"error": "You do not have permission to perform this action."},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 class SignUpView(generics.CreateAPIView):
     serializer_class = CustomUserSerializer
     permission_classes = [permissions.AllowAny]
